@@ -1,0 +1,450 @@
+# Employee Management System - Backend Documentation
+
+## 1. Project Overview
+
+The Employee Management System (EMS) is a web application used to manage employees, departments, attendance, leaves, payroll, and reports.
+
+### User Roles
+
+1. Admin
+2. HR
+3. Employee
+
+---
+
+# 2. Technology Stack
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT Authentication
+* Bcrypt Password Hashing
+* Multer (File Upload)
+* Nodemailer
+* Socket.io (Notifications)
+
+### Database
+
+* MongoDB Atlas
+
+---
+
+# 3. Project Structure
+
+backend/
+
+├── config/
+
+├── controllers/
+
+├── middleware/
+
+├── models/
+
+├── routes/
+
+├── services/
+
+├── utils/
+
+├── uploads/
+
+├── app.js
+
+├── server.js
+
+├── .env
+
+└── package.json
+
+---
+
+# 4. Authentication Module
+
+## Features
+
+* Register User
+* Login
+* Forgot Password
+* Reset Password
+* Change Password
+* JWT Authentication
+
+### API Endpoints
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+POST /api/auth/forgot-password
+
+POST /api/auth/reset-password
+
+POST /api/auth/change-password
+
+---
+
+# 5. User Module
+
+## Features
+
+* Create Employee
+* Update Employee
+* Delete Employee
+* View Employee
+* Search Employee
+* Pagination
+
+### Employee Fields
+
+employeeId
+
+firstName
+
+lastName
+
+email
+
+phone
+
+gender
+
+dob
+
+designation
+
+department
+
+salary
+
+joiningDate
+
+status
+
+profileImage
+
+address
+
+emergencyContact
+
+---
+
+### APIs
+
+GET /api/employees
+
+GET /api/employees/:id
+
+POST /api/employees
+
+PUT /api/employees/:id
+
+DELETE /api/employees/:id
+
+---
+
+# 6. Department Module
+
+### Fields
+
+departmentName
+
+departmentCode
+
+manager
+
+description
+
+status
+
+### APIs
+
+GET /api/departments
+
+POST /api/departments
+
+PUT /api/departments/:id
+
+DELETE /api/departments/:id
+
+---
+
+# 7. Attendance Module
+
+## Features
+
+* Check In
+* Check Out
+* Daily Attendance
+* Monthly Attendance Report
+
+### Fields
+
+employeeId
+
+date
+
+checkIn
+
+checkOut
+
+workingHours
+
+status
+
+### APIs
+
+POST /api/attendance/check-in
+
+POST /api/attendance/check-out
+
+GET /api/attendance
+
+GET /api/attendance/report
+
+---
+
+# 8. Leave Management Module
+
+## Leave Types
+
+* Casual Leave
+* Sick Leave
+* Earned Leave
+
+### Fields
+
+employeeId
+
+leaveType
+
+fromDate
+
+toDate
+
+reason
+
+status
+
+approvedBy
+
+### APIs
+
+POST /api/leaves
+
+GET /api/leaves
+
+PUT /api/leaves/approve/:id
+
+PUT /api/leaves/reject/:id
+
+DELETE /api/leaves/:id
+
+---
+
+# 9. Payroll Module
+
+### Features
+
+* Monthly Salary Calculation
+* Payslip Generation
+* Salary History
+
+### Fields
+
+employeeId
+
+basicSalary
+
+allowance
+
+bonus
+
+deduction
+
+netSalary
+
+paymentDate
+
+### APIs
+
+POST /api/payroll
+
+GET /api/payroll
+
+GET /api/payroll/:employeeId
+
+---
+
+# 10. Task Management Module
+
+### Features
+
+* Assign Task
+* Update Status
+* Track Progress
+
+### Fields
+
+title
+
+description
+
+assignedTo
+
+assignedBy
+
+priority
+
+startDate
+
+endDate
+
+status
+
+### APIs
+
+POST /api/tasks
+
+GET /api/tasks
+
+PUT /api/tasks/:id
+
+DELETE /api/tasks/:id
+
+---
+
+# 11. Notification Module
+
+### Features
+
+* Leave Approval Notification
+* Task Assignment Notification
+* Payroll Notification
+
+### APIs
+
+GET /api/notifications
+
+PUT /api/notifications/read/:id
+
+---
+
+# 12. File Upload Module
+
+### Features
+
+* Profile Image Upload
+* Document Upload
+
+### APIs
+
+POST /api/upload/profile
+
+POST /api/upload/document
+
+---
+
+# 13. Dashboard Module
+
+### Dashboard Metrics
+
+* Total Employees
+* Total Departments
+* Today's Attendance
+* Leave Requests
+* Monthly Payroll Cost
+
+### APIs
+
+GET /api/dashboard/stats
+
+---
+
+# 14. Reports Module
+
+### Reports
+
+* Employee Report
+* Attendance Report
+* Leave Report
+* Payroll Report
+
+### APIs
+
+GET /api/reports/employees
+
+GET /api/reports/attendance
+
+GET /api/reports/leaves
+
+GET /api/reports/payroll
+
+---
+
+# 15. Database Collections
+
+Users
+
+Employees
+
+Departments
+
+Attendance
+
+Leaves
+
+Payroll
+
+Tasks
+
+Notifications
+
+Documents
+
+Roles
+
+---
+
+# 16. Security
+
+* JWT Authentication
+* Password Hashing (bcrypt)
+* Helmet Security
+* Rate Limiting
+* Input Validation
+* CORS Configuration
+
+---
+
+# 17. Environment Variables
+
+PORT=5000
+
+MONGO_URI=
+
+JWT_SECRET=
+
+JWT_EXPIRE=7d
+
+EMAIL_USER=
+
+EMAIL_PASS=
+
+CLIENT_URL=
+
+---
+
+# 18. Future Enhancements
+
+* Biometric Attendance
+* Face Recognition Login
+* GPS Attendance
+* Mobile App
+* AI Employee Analytics
+* Performance Reviews
+* Organization Chart
+* Multi Company Support
