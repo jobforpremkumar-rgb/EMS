@@ -1,30 +1,36 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
+const apiURL = import.meta.env.VITE_API_URL;
 function Register() {
+
+  
   interface registerType {
-    fullName: string;
+    name: string;
     email: string;
     password: string;
     confirmPassword: string;
   }
 
   type ErrorState = {
-    fullName?: string;
+    name?: string;
     email?: string;
     password?: string;
     confirmPassword?: string;
   };
 
   const [formData, setFormData] = useState<registerType>({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [errorState, setErrorState] = useState<ErrorState>({});
+  const navigate = useNavigate()
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+  
 
     const { name, value } = e.target;
     setFormData({
@@ -36,10 +42,10 @@ function Register() {
   const validateForm = () => {
     const errors: Record<string, string> = {};
 
-    const { fullName, email, password, confirmPassword } = formData;
+    const { name, email, password, confirmPassword } = formData;
 
-    if (!fullName.trim()) {
-      errors.fullName = "Name is required";
+    if (!name.trim()) {
+      errors.name = "Name is required";
     }
 
     if (!email.trim()) {
@@ -62,13 +68,34 @@ function Register() {
     return errors;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (Object.keys(validateForm()).length > 0) {
       return;
     } else {
-      console.log(formData);
+      try {
+        const res = await fetch(`${apiURL}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data: any = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message);
+        }
+
+        toast.success(data.message);
+
+        navigate("/")
+      
+      } catch (error: any) {
+        console.log(error?.message);
+        toast.error(error.message);
+      }
     }
   };
   return (
@@ -85,16 +112,16 @@ function Register() {
             </label>
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               onFocus={validateForm}
               onBlur={validateForm}
               placeholder="Enter Full Name"
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errorState?.fullName && (
-              <span className="text-red-400">{errorState?.fullName}</span>
+            {errorState?.name && (
+              <span className="text-red-400">{errorState?.name}</span>
             )}
           </div>
 

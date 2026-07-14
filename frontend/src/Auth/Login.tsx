@@ -1,20 +1,40 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useFetch from "../Hooks/useFetch";
+import toast from "react-hot-toast";
 
 function Login() {
+
+  // this code for type of form data 
+  
   type formData = {
     email: string;
     password: string;
   };
+  // this is for error types 
   type errors = {
     email?: String;
     password?: String;
   };
+
+  // this usestate variable 
   const [formData, setFormData] = useState<formData>({
     email: "",
     password: "",
   });
   const [errorState, setErrorState] = useState<errors>({});
+  
+  const apiURL = import.meta.env.VITE_API_URL; // this is for api URL
+  const navigate = useNavigate();
+ const token = localStorage.getItem("token")
+  if (token)  {
+    navigate("/dashboard") 
+  }
+
+
+
+
+
 
   const handlechange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,19 +61,45 @@ function Login() {
     }
     return error;
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const errors = validate();
- 
+
     setErrorState(errors);
 
-    console.log(errors);
-
     if (Object.keys(errors).length === 0) {
-      console.log(formData);
+      try {
+        const response = await fetch(`${apiURL}/auth/login`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw Error(data.message);
+        }
+        toast.success(data.message);
+        setFormData({
+          email: "",
+          password: "",
+        });
+        localStorage.setItem("token", data.token);
+        navigate("/dashboard");
+      } catch (error: any) {
+        console.log(error.message);
+        toast.error(error.message);
+      }
     }
   };
+
+  const { data } = useFetch("https://jsonplaceholder.typicode.com/posts");
+
+  console.log("data", data);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
